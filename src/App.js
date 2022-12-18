@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import styled from "styled-components";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import AuthContext from "./contexts/AuthContext";
 
-function App() {
+import LoginPage from "./components/LoginPage";
+import SignInPage from "./components/SignInPage";
+import HabitsPage from "./components/HabitsPage";
+
+export default function App() {
+  const [userData, setUserData] = useState({
+    id: 0,
+    name: "",
+    image: "",
+    email: "",
+    password: "",
+    token: "",
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={{ userData, setUserData }}>
+      <BrowserRouter>
+        <AppContainer>
+          <Routes>
+            <Route path={`/`} element={<LoginPage />} />
+            <Route path={`/cadastro`} element={<SignInPage />} />
+            <Route path={`/habitos`} element={<HabitsPage />} />
+          </Routes>
+        </AppContainer>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 
-export default App;
+const AppContainer = styled.div`
+  height: 100vh;
+  width: 100vw;
+`;
