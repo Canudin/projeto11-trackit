@@ -27,45 +27,45 @@ export default function TodayHabits() {
   const monthNumber = new Date().getMonth() + 1;
   const [concludedTasks, setConcludedTasks] = useState(0);
   const [totalTasks, setTotalTasks] = useState(0);
-
+  const [percentageTasks, setPercentageTasks] = useState(0);
+  console.log(config);
   useEffect(() => {
     const promise = axios.get(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",
       config
     );
     promise.then((answer) => setTodayTasks(answer.data));
+    handleTaskCounter();
     return;
   }, []);
 
   function handleTaskCounter() {
-    let isEmpty = true;
+    let notEmpty = false;
+    console.log(todayTasks);
     todayTasks.map((task) => {
-      // const newTotalTasks = totalTasks + 1;
-      // setTotalTasks(newTotalTasks);
+      const newTotalTasks = totalTasks + 1;
+      setTotalTasks(newTotalTasks);
       if (task.done) {
-        isEmpty = false;
+        return (notEmpty = true);
       } else {
-        // setConcludedTasks(concludedTasks + 1);
+        setConcludedTasks(concludedTasks + 1);
       }
     });
-    if (isEmpty) {
+    if (notEmpty) {
       return "Nenhum hábito concluído ainda";
     } else {
-      return `${((concludedTasks + 1) % (totalTasks + 1)) * 100}% dos hábitos concluídos`;
+      const percentageTasks = ((concludedTasks + 1) % (totalTasks + 1)) * 100;
+      return `${percentageTasks}% dos hábitos concluídos`;
     }
   }
 
   return (
-    <Container
-      onClick={() => {
-        console.log(todayTasks);
-      }}
-    >
+    <Container>
       <Title>
         <Day>
           {weekDayName}, {dateNumber}/{monthNumber}
         </Day>
-        <ConcludedPercentage>{handleTaskCounter()}</ConcludedPercentage>
+        <ConcludedPercentage>{}</ConcludedPercentage>
       </Title>
       <TasksContainer>
         {todayTasks.map((task) => {

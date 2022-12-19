@@ -1,7 +1,27 @@
+import axios from "axios";
 import styled from "styled-components";
 
 export default function TodayTask(props) {
   const { id, name, done, currentSequence, highestSequence } = props.task;
+  const localUserData = JSON.parse(localStorage.getItem("userdata"));
+  const token = localUserData.token;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  function handleTaskComplete() {
+    console.log(props.task);
+    console.log(config);
+    // const promise = axios.post(
+    //   `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,
+    //   config
+    // );
+    // promise.then((answer) => console.log(answer.data));
+    // promise.catch((answer) => console.log(answer.response.data));
+  }
+
   return (
     <Container>
       <Description>
@@ -9,7 +29,7 @@ export default function TodayTask(props) {
         <TaskSequence>Sequência atual: {currentSequence} dias</TaskSequence>
         <TaskRecord>Seu recorde: {highestSequence} dias</TaskRecord>
       </Description>
-      <CheckBox background={done} />
+      <CheckBox background={done} onClick={() => handleTaskComplete()} />
     </Container>
   );
 }
