@@ -2,11 +2,13 @@ import styled from "styled-components";
 
 import Header from "./Header";
 import Footer from "./Footer";
+import TodayHabits from "./TodayHabits";
 
 export default function TodayPage() {
   return (
     <Container>
       <Header />
+      <TodayHabits />
       <Footer />
     </Container>
   );
