@@ -41,6 +41,10 @@ export default function MyHabits() {
     }
   }
 
+  function handleCheckHabit(){
+    
+  }
+
   function handleContent(habits) {
     if (habits.length !== 0) {
       return habits.map((habit) => {
@@ -67,7 +71,7 @@ export default function MyHabits() {
             <HabitDays>
               {days.map((day) => {
                 return (
-                  <HabitDay color={day.isHabit} background={day.isHabit}>
+                  <HabitDay color={day.isHabit} background={day.isHabit} onClick={() => handleCheckHabit()}>
                     {day.shortName}
                   </HabitDay>
                 );

@@ -2,15 +2,11 @@ import styled from "styled-components";
 
 import Header from "./Header";
 import Footer from "./Footer";
-import CreateHabitContainer from "./CreateHabitContainer";
-import MyHabits from "./MyHabits";
 
-export default function HabitsPage() {
+export default function HistoryPage() {
   return (
     <Container>
       <Header />
-      <CreateHabitContainer />
-      <MyHabits />
       <Footer />
     </Container>
   );

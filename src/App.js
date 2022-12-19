@@ -6,6 +6,8 @@ import AuthContext from "./contexts/AuthContext";
 import LoginPage from "./components/LoginPage";
 import SignInPage from "./components/SignInPage";
 import HabitsPage from "./components/HabitsPage";
+import TodayPage from "./components/TodayPage";
+import HistoryPage from "./components/HistoryPage";
 
 export default function App() {
   const [userData, setUserData] = useState({
@@ -24,6 +26,8 @@ export default function App() {
             <Route path={`/`} element={<LoginPage />} />
             <Route path={`/cadastro`} element={<SignInPage />} />
             <Route path={`/habitos`} element={<HabitsPage />} />
+            <Route path={`/hoje`} element={<TodayPage />} />
+            <Route path={`/historico`} element={<HistoryPage />} />
           </Routes>
         </AppContainer>
       </BrowserRouter>
@@ -32,6 +36,5 @@ export default function App() {
 }
 
 const AppContainer = styled.div`
-  height: 100vh;
   width: 100vw;
 `;

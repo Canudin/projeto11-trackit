@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import DayButton from "./DayButton";
@@ -36,6 +37,7 @@ export default function CreateHabitContainer() {
       // console.log(answer.data);
       alert("Sucesso!");
       clearForm(habit);
+      window.location.reload();
     });
     promise.catch((answer) => console.log(answer.response.data));
   }
@@ -168,7 +170,7 @@ const ContainerAction = styled.div`
   margin-top: 30px;
   display: flex;
   justify-content: right;
-  background-color: red;
+  /* background-color: ; */
 `;
 
 const CancelButton = styled.button`
