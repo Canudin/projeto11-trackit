@@ -18,6 +18,8 @@ export default function LoginPage() {
     );
     request.then((req) => {
       setUserData(req.data);
+      const userDataJSON = JSON.stringify(req.data)
+      localStorage.setItem("userdata", userDataJSON)
       navigate("/habitos");
     });
     request.catch((err) => console.log(err));

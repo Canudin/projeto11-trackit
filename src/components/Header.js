@@ -4,7 +4,8 @@ import AuthContext from "../contexts/AuthContext";
 
 export default function Header() {
   const { userData } = useContext(AuthContext);
-  const userImage = userData.image;
+  const localUserData = JSON.parse(localStorage.getItem("userdata"))
+  const userImage = localUserData.image;
   return (
     <Container>
       <Content>
