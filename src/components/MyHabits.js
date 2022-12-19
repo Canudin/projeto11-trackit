@@ -4,43 +4,41 @@ import AuthContext from "../contexts/AuthContext";
 import styled from "styled-components";
 
 export default function MyHabits() {
-  const { userData, setUserData } = useContext(AuthContext);
   const localUserData = JSON.parse(localStorage.getItem("userdata"));
   const token = localUserData.token;
   const [habits, setHabits] = useState([]);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    handleUserHabits();
+  }, []);
+
+  function handleUserHabits() {
     const promise = axios.get(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
       config
     );
     promise.then((answer) => setHabits(answer.data));
-    promise.catch((answer) => console.log(answer));
-  }, []);
+    promise.catch((answer) => console.log(answer.response));
+  }
 
   function handleDeletion(id) {
-    let confirmation;
-    let text;
-    if (window.confirm(confirmation?"Quer mesmo apagar o hábito?":true) == true) {
-      text = "You pressed OK!";
+    if (window.confirm("Quer mesmo apagar o hábito?")) {
+      const config = { headers: { Authorization: `Bearer ${localUserData.token}` } };
+      const promise = axios.delete(
+        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`,
+        config
+      );
+      promise.then((answer) => {
+        handleUserHabits();
+        console.log(answer);
+      });
     } else {
-      text = "You canceled!";
+      return;
     }
-    console.log(text)
-    // const confirmation = confirm("Quer mesmo apagar o hábito?");
-    // if (confirmation === true) {
-    //   console.log(confirmation);
-    //   const promise = axios.delete(
-    //     `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
-    //   );
-    //   promise.then();
-    // } else {
-    //   return;
-    // }
   }
 
   function handleContent(habits) {

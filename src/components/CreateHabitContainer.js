@@ -6,7 +6,6 @@ import DayButton from "./DayButton";
 
 export default function CreateHabitContainer() {
   const localUserData = JSON.parse(localStorage.getItem("userdata"));
-  const [displayNewHabit, setDisplayNewHabit] = useState(false);
   const [weekSelected, setWeekSelected] = useState([
     { day: "D", selected: false, id: 0 },
     { day: "S", selected: false, id: 1 },
