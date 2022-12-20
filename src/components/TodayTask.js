@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export default function TodayTask(props) {
   const { id, name, done, currentSequence, highestSequence } = props.task;
+  const { concludedNumber, setConcludedNumber } = props;
   const localUserData = JSON.parse(localStorage.getItem("userdata"));
   const token = localUserData.token;
   const config = {
@@ -11,15 +12,30 @@ export default function TodayTask(props) {
     },
   };
 
-  function handleTaskComplete() {
-    console.log(props.task);
-    console.log(config);
-    // const promise = axios.post(
-    //   `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,
-    //   config
-    // );
-    // promise.then((answer) => console.log(answer.data));
-    // promise.catch((answer) => console.log(answer.response.data));
+  function handleTaskComplete(done) {
+    if (!done) {
+      const promise = axios.post(
+        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,
+        {},
+        config
+      );
+      promise.then((answer) => {
+        let newConcludedNumber = concludedNumber + 1;
+        setConcludedNumber(newConcludedNumber);
+      });
+      promise.catch((answer) => console.log(answer.response.data));
+    } else {
+      const promise = axios.post(
+        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`,
+        {},
+        config
+      );
+      promise.then((answer) => {
+        let newConcludedNumber = concludedNumber - 1;
+        setConcludedNumber(newConcludedNumber);
+      });
+      promise.catch((answer) => console.log(answer.response.data));
+    }
   }
 
   return (
@@ -29,7 +45,9 @@ export default function TodayTask(props) {
         <TaskSequence>Sequência atual: {currentSequence} dias</TaskSequence>
         <TaskRecord>Seu recorde: {highestSequence} dias</TaskRecord>
       </Description>
-      <CheckBox background={done} onClick={() => handleTaskComplete()} />
+      <CheckBox background={done} onClick={() => handleTaskComplete(done)}>
+        <ion-icon name="checkmark-outline" />
+      </CheckBox>
     </Container>
   );
 }
@@ -67,4 +85,11 @@ const CheckBox = styled.div`
   background-color: ${(props) => (props.background ? "#8FC549" : "#EBEBEB")};
   border: 1px solid #e7e7e7;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ion-icon{
+    font-size: 60px;
+    color: #ffffff;
+  }
 `;

@@ -17,6 +17,8 @@ export default function HistoryPage() {
 const Container = styled.div`
   min-height: calc(100vh - 70px - 70px);
   width: 100%;
-  margin: 20px 0;
+  box-sizing: border-box;
+  margin: 70px 0;
   padding: 0 20px;
+  background-color: #f2f2f2;
 `;

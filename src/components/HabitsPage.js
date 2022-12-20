@@ -17,10 +17,10 @@ export default function HabitsPage() {
 }
 
 const Container = styled.div`
-  width: 375px;
+  width: 100%;
   min-height: calc(100vh - 70px - 70px);
   display: flex;
   flex-direction: column;
-  margin: 70px auto 70px auto;
+  margin: 70px 0;
   background-color: #f2f2f2;
 `;

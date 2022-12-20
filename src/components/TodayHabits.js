@@ -25,39 +25,28 @@ export default function TodayHabits() {
   const weekDayName = weekDayNames[new Date().getDay()].longDay;
   const dateNumber = new Date().getDate();
   const monthNumber = new Date().getMonth() + 1;
-  const [concludedTasks, setConcludedTasks] = useState(0);
-  const [totalTasks, setTotalTasks] = useState(0);
-  const [percentageTasks, setPercentageTasks] = useState(0);
-  console.log(config);
+  const [percentagePhrase, setPercentagePhrase] = useState("Nenhum hábito concluído ainda");
+  const [concludedNumber, setConcludedNumber] = useState(0);
+
   useEffect(() => {
     const promise = axios.get(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",
       config
     );
-    promise.then((answer) => setTodayTasks(answer.data));
-    handleTaskCounter();
+    promise.then((answer) => {
+      let newConcluded = 0;
+      let percentage = 0;
+      setTodayTasks(answer.data);
+      answer.data.map((n) => {
+        if (n.done) {
+          newConcluded++;
+          percentage = ((newConcluded / answer.data.length) * 100).toFixed(0);
+          setPercentagePhrase(`${percentage.toString()}% dos hábitos concluídos`);
+        }
+      });
+    });
     return;
   }, []);
-
-  function handleTaskCounter() {
-    let notEmpty = false;
-    console.log(todayTasks);
-    todayTasks.map((task) => {
-      const newTotalTasks = totalTasks + 1;
-      setTotalTasks(newTotalTasks);
-      if (task.done) {
-        return (notEmpty = true);
-      } else {
-        setConcludedTasks(concludedTasks + 1);
-      }
-    });
-    if (notEmpty) {
-      return "Nenhum hábito concluído ainda";
-    } else {
-      const percentageTasks = ((concludedTasks + 1) % (totalTasks + 1)) * 100;
-      return `${percentageTasks}% dos hábitos concluídos`;
-    }
-  }
 
   return (
     <Container>
@@ -65,11 +54,17 @@ export default function TodayHabits() {
         <Day>
           {weekDayName}, {dateNumber}/{monthNumber}
         </Day>
-        <ConcludedPercentage>{}</ConcludedPercentage>
+        <ConcludedPercentage color={concludedNumber}>{percentagePhrase}</ConcludedPercentage>
       </Title>
       <TasksContainer>
         {todayTasks.map((task) => {
-          return <TodayTask task={task}></TodayTask>;
+          return (
+            <TodayTask
+              task={task}
+              concludedNumber={concludedNumber}
+              setConcludedNumber={setConcludedNumber}
+            ></TodayTask>
+          );
         })}
       </TasksContainer>
     </Container>
@@ -77,6 +72,7 @@ export default function TodayHabits() {
 }
 
 const Container = styled.div`
+box-sizing: border-box;
   min-height: calc(100vh - 70px - 70px);
   width: 100%;
   margin: 20px 0;
@@ -95,7 +91,7 @@ const Day = styled.p`
 const ConcludedPercentage = styled.p`
   margin-top: 5px;
   font-size: 18px;
-  color: #bababa;
+  color: ${(props) => (props.color !== 0 ? "#8FC549" : "#BABABA")};
 `;
 
 const TasksContainer = styled.div`
